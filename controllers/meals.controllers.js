@@ -42,7 +42,7 @@ const listMeals = async (req, res, next) => {
       include: [{ model: Restaurants }],
     });
 
-    //enviamos la respuesta
+    // enviamos la respuesta
     res.status(200).json({
       searchMealsList,
     });

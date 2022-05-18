@@ -16,11 +16,22 @@ const newOrders = async (req, res, next) => {
     //buscar meals
     const searchMeals = await Meals.findOne({
       where: { id: mealId, status: 'active' },
+      include: [{ model: Restaurants }],
     });
 
     //validamos si la comida existe
     if (!searchMeals) {
       return next(new AppError('meals does not exist', 404));
+    }
+
+    //buscar el restaurante este existete
+    const searchRestaurants = await Restaurants.findOne({
+      where: { id: searchMeals.restaurant.id, status: 'active' },
+    });
+
+    //validamos informacion
+    if (!searchRestaurants) {
+      return next(new AppError('restaurants does not exist', 404));
     }
 
     //buscar usuario
